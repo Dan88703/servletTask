@@ -3,5 +3,10 @@
     "id": "3c430c31-75d5-4b4b-a3d9-588a91a7380c",
     "login": "da",
     "password": "$2a$10$xCfbvvGK4bqUtfTPNbaYK.wgFku.JOxBXRgpbn1A4VUT7TzCDThZS"
+  },
+  {
+    "id": "9b4e51da-8834-4002-bcdf-7f86c333244d",
+    "login": "qdqd",
+    "password": "$2a$10$6Z3IvQkhmOKiCZlvFMcAYuO2nBCjUOGZlK6xnnpEqXLBd8K7Ov0Z2"
   }
 ]

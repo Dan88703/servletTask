@@ -15,18 +15,12 @@
             --card-bg: rgba(255, 255, 255, 0.08);
             --text: #f5f3ff;
             --text-dim: #c4b5fd;
-            --error: #f87171;
             box-sizing: border-box;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
-        html, body {
-            margin: 0;
-            min-height: 100%;
-        }
+        html, body { margin: 0; min-height: 100%; }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -43,7 +37,7 @@
         /* ---------- Шапка ---------- */
         header {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
 
         header h1 {
@@ -77,6 +71,17 @@
             margin-bottom: 32px;
         }
 
+        .add-form fieldset {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            border: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
         .add-form .field {
             flex: 1 1 220px;
         }
@@ -101,9 +106,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .add-form input::placeholder {
-            color: rgba(245, 243, 255, 0.35);
-        }
+        .add-form input::placeholder { color: rgba(245, 243, 255, 0.35); }
 
         .add-form input:focus {
             border-color: var(--accent);
@@ -111,7 +114,7 @@
         }
 
         .add-form input.invalid {
-            border-color: var(--error);
+            border-color: #f87171;
         }
 
         .add-btn-wrap {
@@ -133,19 +136,14 @@
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
-        .add-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(168, 85, 247, 0.45);
-        }
-
-        .add-btn:active {
-            transform: translateY(0);
-        }
+        .add-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(168, 85, 247, 0.45); }
+        .add-btn:active { transform: translateY(0); }
+        .add-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         .form-hint {
             width: 100%;
             font-size: 12px;
-            color: var(--error);
+            color: #f87171;
             min-height: 16px;
         }
 
@@ -164,9 +162,7 @@
             font-size: 16px;
         }
 
-        .empty.show {
-            display: block;
-        }
+        .empty.show { display: block; }
 
         .product {
             background: var(--card-bg);
@@ -179,25 +175,12 @@
             flex-direction: column;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
             transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-            animation: fadeUp 0.45s ease both;
-            position: relative;
         }
 
         .product:hover {
             transform: translateY(-6px);
             border-color: rgba(168, 85, 247, 0.55);
             box-shadow: 0 26px 60px rgba(168, 85, 247, 0.25);
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(14px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .thumb {
@@ -225,52 +208,11 @@
             word-break: break-word;
         }
 
-        .remove {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(0, 0, 0, 0.35);
-            color: var(--text-dim);
-            font-size: 14px;
-            line-height: 1;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
-        }
-
-        .product:hover .remove {
-            opacity: 1;
-        }
-
-        .remove:hover {
-            background: var(--error);
-            color: white;
-        }
-
         @media (max-width: 520px) {
-            header h1 {
-                font-size: 26px;
-            }
-
-            body {
-                padding-left: 16px;
-                padding-right: 16px;
-            }
-
-            .add-btn-wrap {
-                width: 100%;
-            }
-
-            .add-btn {
-                width: 100%;
-            }
+            header h1 { font-size: 26px; }
+            body { padding-left: 16px; padding-right: 16px; }
+            .add-btn-wrap { width: 100%; }
+            .add-btn { width: 100%; }
         }
     </style>
 </head>
@@ -283,79 +225,53 @@
     </header>
 
     <form class="add-form" action="/secure/products" method="post" id="addForm">
-        <div class="field">
-            <label for="pname">Название продукта</label>
-            <input name="name" type="text" id="pname" placeholder="Например: Наушники">
-        </div>
-        <div class="field">
-            <label for="pimage">Ссылка на картинку</label>
-            <input name="imgUrl" type="url" id="pimage" placeholder="https://...">
-        </div>
-        <div class="add-btn-wrap">
-            <button type="submit" class="add-btn">Добавить продукт</button>
-        </div>
-        <div class="form-hint" id="formHint"></div>
+        <fieldset>
+            <div class="field">
+                <label for="pname">Название продукта</label>
+                <input name="name" type="text" id="pname" placeholder="Например: Наушники">
+            </div>
+            <div class="field">
+                <label for="pimage">Ссылка на картинку</label>
+                <input name="imgUrl" type="url" id="pimage" placeholder="https://...">
+            </div>
+            <div class="add-btn-wrap">
+                <button type="submit" class="add-btn" id="addBtn">Добавить продукт</button>
+            </div>
+            <div class="form-hint" id="formHint"></div>
+        </fieldset>
     </form>
+
+    <div class="grid" id="grid">
         <c:forEach var="product" items="${products}">
             <div class="product">
                 <div class="thumb">
-           <img src="${product.imgUrl}">
+                    <img src="${product.url}" alt="${product.name}" onerror="this.parentElement.textContent='📦'">
                 </div>
-                <h3>
-                    <c:out value="${product.name}"/>
-                </h3>
-
+                <h3><c:out value="${product.name}"/></h3>
             </div>
+            <form action="/secure/products">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <input type="hidden" name="id" value="${product.id}"/>
+                <button type="submit" name="remove-btn" style="color: red">Remove</button>
+            </form>
         </c:forEach>
-    <div class="grid" id="grid"></div>
-    <div class="empty" id="empty">Пока нет ни одного продукта — добавь первый выше 👆</div>
+    </div>
+
+    <c:if test="${empty products}">
+        <div class="empty show" id="empty">Пока нет ни одного продукта — добавь первый выше 👆</div>
+    </c:if>
 </div>
 
 <script>
-    // ---------- Начальный список (можно оставить пустым: []) ----------
-    const products = [];
-
-    const grid = document.getElementById('grid');
-    const emptyEl = document.getElementById('empty');
     const form = document.getElementById('addForm');
     const nameInput = document.getElementById('pname');
-    const imageInput = document.getElementById('pimage');
     const formHint = document.getElementById('formHint');
-
-    function renderProducts() {
-        grid.innerHTML = '';
-        emptyEl.classList.toggle('show', products.length === 0);
-
-        products.forEach((p, index) => {
-            const card = document.createElement('div');
-            card.className = 'product';
-            card.style.animationDelay = (index * 0.05) + 's';
-
-            const thumb = p.image
-                ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentElement.textContent='📦'">`
-                : '📦';
-
-            card.innerHTML = `
-        <button class="remove" title="Удалить">✕</button>
-        <div class="thumb">${thumb}</div>
-        <h3>${p.name}</h3>
-      `;
-
-            card.querySelector('.remove').addEventListener('click', () => {
-                products.splice(index, 1);
-                renderProducts();
-            });
-
-            grid.appendChild(card);
-        });
-    }
+    const addBtn = document.getElementById('addBtn');
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const name = nameInput.value.trim();
-        const image = imageInput.value.trim();
-
         nameInput.classList.remove('invalid');
 
         if (!name) {
@@ -364,27 +280,34 @@
             return;
         }
 
+        addBtn.disabled = true;
+        formHint.textContent = '';
+
         fetch('/secure/products', {
             method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(new FormData(form))
         }).then(res => {
             if (res.ok) {
-                formHint.textContent = '';
-                // Отображение продуктов будет реализовано отдельно.
-                // Успешный POST не добавляет карточку в интерфейс.
-
-                form.reset();
-                nameInput.focus();
+                // Продукт сохранён на сервере — перезагружаем страницу,
+                // чтобы JSP заново отрисовал актуальный список из products.json
+                window.location.reload();
             } else {
                 formHint.textContent = 'Ошибка при добавлении продукта';
+                addBtn.disabled = false;
             }
         }).catch(() => {
             formHint.textContent = 'Не удалось связаться с сервером';
+            addBtn.disabled = false;
         });
+        fetch("/login", {}. then(res =>{
+            if(res.ok){
+                window.location.href = "/secure/products"
+            }else {
+                setHint(passHint, 'Ошибка при регистрации', 'error');
+            }
+        }))
     });
-
-    renderProducts();
 </script>
 
 </body>

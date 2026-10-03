@@ -347,36 +347,33 @@
     });
 
     form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const name = nameInput.value.trim();
-        const image = imageInput.value.trim();
-
-        nameInput.classList.remove('invalid');
-
-        if (!name) {
-            nameInput.classList.add('invalid');
-            formHint.textContent = 'Введите название продукта';
-            return;
+        if (!(validateName() && validatePass() && validatePass2())) {
+            e.preventDefault();
         }
 
-        fetch('/secure/products', {
+        const okName  = validateName();
+        const okPass  = validatePass();
+        const okPass2 = validatePass2();
+        if (!okName || !okPass || !okPass2) return;
+
+        submitBtn.disabled = true;
+
+        fetch('/registration', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(new FormData(form))
         }).then(res => {
             if (res.ok) {
-                formHint.textContent = '';
-                products.push({ name, image });
-                renderProducts();
-
-                form.reset();
-                nameInput.focus();
+                successText.textContent = 'Аккаунт успешно создан.';
+                formWrap.classList.add('hide');
+                successScreen.classList.add('show');
             } else {
-                formHint.textContent = 'Ошибка при добавлении продукта';
+                setHint(pass2Hint, 'Ошибка при регистрации', 'error');
             }
         }).catch(() => {
-            formHint.textContent = 'Не удалось связаться с сервером';
+            setHint(pass2Hint, 'Не удалось связаться с сервером', 'error');
+        }).finally(() => {
+            submitBtn.disabled = false;
         });
     });
 

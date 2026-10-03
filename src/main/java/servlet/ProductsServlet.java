@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.ProductService;
-import service.UserService;
 
 import java.io.IOException;
 import java.util.List;
@@ -47,6 +46,13 @@ public class ProductsServlet extends HttpServlet {
                 .build();
 
         productService.saveP(product);
-        resp.sendRedirect("/secure/products.jsp");
+        resp.sendRedirect("/secure/products");
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        productService.removeById(UUID.fromString(id));
+        resp.sendRedirect("/secure/products");
     }
 }
