@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Регистрация</title>
+    <style>
+        :root {
+            --bg-1: #1e1b4b;
+            --bg-2: #4c1d95;
+            --accent: #a855f7;
+            --accent-2: #6366f1;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text: #f5f3ff;
+            --text-dim: #c4b5fd;
+            --error: #f87171;
+            --success: #34d399;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            box-sizing: border-box;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at 20% 20%, var(--bg-2), var(--bg-1) 60%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: var(--text);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 380px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 36px 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .card h1 {
+            margin: 0 0 4px;
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(90deg, #f472b6, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .card p.subtitle {
+            margin: 0 0 28px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(0, 0, 0, 0.25);
+            color: var(--text);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .field input::placeholder {
+            color: rgba(245, 243, 255, 0.35);
+        }
+
+        .field input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+        }
+
+        .toggle-pass {
+            position: absolute;
+            right: 14px;
+            top: 38px;
+            cursor: pointer;
+            color: var(--text-dim);
+            font-size: 13px;
+            user-select: none;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 6px;
+            min-height: 16px;
+        }
+
+        .hint.error { color: var(--error); }
+        .hint.success { color: var(--success); }
+
+        .strength-bar {
+            height: 5px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.12);
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.3s ease, background 0.3s ease;
+        }
+
+        button.submit {
+            width: 100%;
+            padding: 13px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(90deg, var(--accent-2), var(--accent));
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.35);
+        }
+
+        button.submit:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(168, 85, 247, 0.45); }
+        button.submit:active { transform: translateY(0); }
+        button.submit:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .success-screen {
+            text-align: center;
+            display: none;
+        }
+
+        .success-screen.show { display: block; }
+        .form-wrap.hide { display: none; }
+
+        .success-screen .check {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--success), #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .success-screen h2 {
+            margin: 0 0 8px;
+            font-size: 20px;
+        }
+
+        .success-screen p {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .switch-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        .switch-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .switch-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="form-wrap" id="formWrap">
+        <h1>Создать аккаунт</h1>
+        <p class="subtitle">Введите имя и пароль для регистрации</p>
+
+        <form action="/registration" id="regForm" method="post" novalidate>
+            <div class="field">
+                <label for="name">Имя</label>
+                <input type="text" id="name" placeholder="Введите ваше имя" autocomplete="name" name="login" required minlength="2">
+                <div class="hint" id="nameHint"></div>
+            </div>
+
+            <div class="field">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" placeholder="Минимум 6 символов" name="pas" autocomplete="new-password" required minlength="6">
+                <span class="toggle-pass" id="togglePass">Показать</span>
+                <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                <div class="hint" id="passHint"></div>
+            </div>
+
+            <div class="field">
+                <label for="password2">Повторите пароль</label>
+                <input type="password" id="password2" placeholder="Повторите пароль" autocomplete="new-password" required>
+                <div class="hint" id="pass2Hint"></div>
+            </div>
+
+            <button type="submit" class="submit" id="submitBtn">Зарегистрироваться</button>
+        </form>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+        <div class="check">✓</div>
+        <h2>Готово!</h2>
+        <p id="successText">Аккаунт успешно создан.</p>
+        <div class="switch-link" style="margin-top:24px;">
+            <a id="backLink">Назад к форме</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('regForm');
+    const nameInput = document.getElementById('name');
+    const passInput = document.getElementById('password');
+    const pass2Input = document.getElementById('password2');
+    const nameHint = document.getElementById('nameHint');
+    const passHint = document.getElementById('passHint');
+    const pass2Hint = document.getElementById('pass2Hint');
+    const strengthFill = document.getElementById('strengthFill');
+    const submitBtn = document.getElementById('submitBtn');
+    const togglePass = document.getElementById('togglePass');
+    const formWrap = document.getElementById('formWrap');
+    const successScreen = document.getElementById('successScreen');
+    const successText = document.getElementById('successText');
+    const backLink = document.getElementById('backLink');
+
+    function setHint(el, msg, type) {
+        el.textContent = msg || '';
+        el.className = 'hint' + (type ? ' ' + type : '');
+    }
+
+    function checkStrength(pass) {
+        let score = 0;
+        if (pass.length >= 6) score++;
+        if (pass.length >= 10) score++;
+        if (/[A-Z]/.test(pass) && /[a-z]/.test(pass)) score++;
+        if (/[0-9]/.test(pass)) score++;
+        if (/[^A-Za-z0-9]/.test(pass)) score++;
+        return score;
+    }
+
+    function updateStrengthBar(pass) {
+        const score = checkStrength(pass);
+        const pct = Math.min(100, (score / 5) * 100);
+        strengthFill.style.width = pct + '%';
+        let color = '#f87171';
+        if (score >= 4) color = '#34d399';
+        else if (score >= 2) color = '#fbbf24';
+        strengthFill.style.background = color;
+    }
+
+    function validateName() {
+        const val = nameInput.value.trim();
+        if (val.length === 0) {
+            setHint(nameHint, '');
+            return false;
+        }
+        if (val.length < 2) {
+            setHint(nameHint, 'Имя слишком короткое', 'error');
+            return false;
+        }
+        setHint(nameHint, 'Отлично!', 'success');
+        return true;
+    }
+
+    function validatePass() {
+        const val = passInput.value;
+        updateStrengthBar(val);
+        if (val.length === 0) {
+            setHint(passHint, '');
+            return false;
+        }
+        if (val.length < 6) {
+            setHint(passHint, 'Минимум 6 символов', 'error');
+            return false;
+        }
+        setHint(passHint, 'Надёжный пароль', 'success');
+        return true;
+    }
+
+    function validatePass2() {
+        if (pass2Input.value.length === 0) {
+            setHint(pass2Hint, '');
+            return false;
+        }
+        if (pass2Input.value !== passInput.value) {
+            setHint(pass2Hint, 'Пароли не совпадают', 'error');
+            return false;
+        }
+        setHint(pass2Hint, 'Пароли совпадают', 'success');
+        return true;
+    }
+    [nameInput, passInput, pass2Input].forEach(el => {
+        el.addEventListener('input', () => {
+            validateName();
+            validatePass();
+            validatePass2();
+        });
+    });
+
+    togglePass.addEventListener('click', () => {
+        const isPass = passInput.type === 'password';
+        passInput.type = isPass ? 'text' : 'password';
+        togglePass.textContent = isPass ? 'Скрыть' : 'Показать';
+    });
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = nameInput.value.trim();
+        const image = imageInput.value.trim();
+
+        nameInput.classList.remove('invalid');
+
+        if (!name) {
+            nameInput.classList.add('invalid');
+            formHint.textContent = 'Введите название продукта';
+            return;
+        }
+
+        fetch('/secure/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(new FormData(form))
+        }).then(res => {
+            if (res.ok) {
+                formHint.textContent = '';
+                products.push({ name, image });
+                renderProducts();
+
+                form.reset();
+                nameInput.focus();
+            } else {
+                formHint.textContent = 'Ошибка при добавлении продукта';
+            }
+        }).catch(() => {
+            formHint.textContent = 'Не удалось связаться с сервером';
+        });
+    });
+
+    backLink.addEventListener('click', () => {
+        successScreen.classList.remove('show');
+        formWrap.classList.remove('hide');
+        form.reset();
+        setHint(nameHint, '');
+        setHint(passHint, '');
+        setHint(pass2Hint, '');
+        strengthFill.style.width = '0%';
+    });
+</script>
+
+</body>
+</html>

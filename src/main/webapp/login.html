@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Вход</title>
+    <style>
+        :root {
+            --bg-1: #1e1b4b;
+            --bg-2: #4c1d95;
+            --accent: #a855f7;
+            --accent-2: #6366f1;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text: #f5f3ff;
+            --text-dim: #c4b5fd;
+            --error: #f87171;
+            --success: #34d399;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            box-sizing: border-box;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at 20% 20%, var(--bg-2), var(--bg-1) 60%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: var(--text);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 380px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 36px 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .card h1 {
+            margin: 0 0 4px;
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(90deg, #f472b6, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .card p.subtitle {
+            margin: 0 0 28px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(0, 0, 0, 0.25);
+            color: var(--text);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .field input::placeholder {
+            color: rgba(245, 243, 255, 0.35);
+        }
+
+        .field input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+        }
+
+        .toggle-pass {
+            position: absolute;
+            right: 14px;
+            top: 38px;
+            cursor: pointer;
+            color: var(--text-dim);
+            font-size: 13px;
+            user-select: none;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 6px;
+            min-height: 16px;
+        }
+
+        .hint.error { color: var(--error); }
+        .hint.success { color: var(--success); }
+
+        button.submit {
+            width: 100%;
+            padding: 13px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(90deg, var(--accent-2), var(--accent));
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.35);
+        }
+
+        button.submit:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(168, 85, 247, 0.45); }
+        button.submit:active { transform: translateY(0); }
+        button.submit:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .switch-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        .switch-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .switch-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Вход</h1>
+    <p class="subtitle">Введите имя и пароль для входа</p>
+
+    <form action="/login" id="loginForm" method="post" novalidate>
+        <div class="field">
+            <label for="name">Имя</label>
+            <input type="text" id="name" placeholder="Введите ваше имя" autocomplete="username" name="login" required minlength="2">
+            <div class="hint" id="nameHint"></div>
+        </div>
+
+        <div class="field">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" placeholder="Введите пароль" name="pas" autocomplete="current-password" required minlength="6">
+            <span class="toggle-pass" id="togglePass">Показать</span>
+            <div class="hint" id="passHint"></div>
+        </div>
+
+        <button type="submit" class="submit" id="submitBtn">Войти</button>
+    </form>
+
+    <div class="switch-link">
+        Нет аккаунта? <a id="toRegister" href="/register">Зарегистрироваться</a>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('loginForm');
+    const nameInput = document.getElementById('name');
+    const passInput = document.getElementById('password');
+    const nameHint = document.getElementById('nameHint');
+    const passHint = document.getElementById('passHint');
+    const togglePass = document.getElementById('togglePass');
+
+    function setHint(el, msg, type) {
+        el.textContent = msg || '';
+        el.className = 'hint' + (type ? ' ' + type : '');
+    }
+
+    function validateName() {
+        const val = nameInput.value.trim();
+        if (val.length === 0) {
+            setHint(nameHint, '');
+            return false;
+        }
+        if (val.length < 2) {
+            setHint(nameHint, 'Имя слишком короткое', 'error');
+            return false;
+        }
+        setHint(nameHint, '', '');
+        return true;
+    }
+
+    function validatePass() {
+        const val = passInput.value;
+        if (val.length === 0) {
+            setHint(passHint, '');
+            return false;
+        }
+        if (val.length < 6) {
+            setHint(passHint, 'Минимум 6 символов', 'error');
+            return false;
+        }
+        setHint(passHint, '', '');
+        return true;
+    }
+
+    [nameInput, passInput].forEach(el => {
+        el.addEventListener('input', () => {
+            validateName();
+            validatePass();
+        });
+    });
+
+    togglePass.addEventListener('click', () => {
+        const isPass = passInput.type === 'password';
+        passInput.type = isPass ? 'text' : 'password';
+        togglePass.textContent = isPass ? 'Скрыть' : 'Показать';
+    });
+
+    form.addEventListener('submit', (e) => {
+        const nameOk = nameInput.value.trim().length >= 2;
+        const passOk = passInput.value.length >= 6;
+
+        if (!nameOk) setHint(nameHint, 'Введите корректное имя', 'error');
+        if (!passOk) setHint(passHint, 'Минимум 6 символов', 'error');
+
+        if (!(nameOk && passOk)) {
+            e.preventDefault();
+            return;
+        }
+        // если всё ок — форма отправится обычным способом (action="/login")
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Входим...';
+    });
+</script>
+
+</body>
+</html>
