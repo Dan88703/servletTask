@@ -18,7 +18,6 @@ import java.util.UUID;
 public class RegisterServlet extends HttpServlet {
 
     private UserService userService;
-
     private BCryptPasswordEncoder encoder;
 
     @Override
@@ -34,7 +33,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp){
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String login = req.getParameter("login");
         String password = req.getParameter("pas");
         User user = User.builder()
